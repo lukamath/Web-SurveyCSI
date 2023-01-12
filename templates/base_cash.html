@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %} - WebCash </title>
+    <style>
+        .message {
+            padding: 10px;
+            margin: 5px;
+            background-color: #f3f3f3
+        }
+
+        nav{
+            background-color: darkblue;
+        }
+        nav a {
+            color: white;   /*#d64161;*/
+            font-size: 1.3em;
+            margin-left: 50px;
+            text-decoration: none;
+        }
+
+        .alert {
+            padding: 20px;
+            margin: 5px;
+            color: #970020;
+            background-color: #ffd5de;
+        }
+
+        td {text-align: left; vertical-align: top;
+        }
+
+        .t2{
+            color: grey;
+            font-size: 1.3em;
+            text-decoration: blink;
+        }
+
+        .t3{
+            color: grey;
+            font-size: 1.1em;
+            text-decoration: blink;
+            font-style: italic;
+        }
+
+        .cust-details{
+            float: left;
+            padding: 13px;
+        }
+
+
+    </style>
+</head>
+<body onload='initcash()'>
+    <nav>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <a href="{{ url_for('add_customer') }}">Nuovo Studente</a>
+        <a href="{{ url_for('list_students') }}">Lista Studenti</a>
+        <a href="{{ url_for('list_payments') }}">Lista Pagamenti</a>
+        <a href="#">Report Pagamenti</a>
+    </nav>
+    <hr>
+    <div class="content">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

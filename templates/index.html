@@ -1,0 +1,21 @@
+{% extends 'base_login.html' %}
+
+{% block content %}
+
+<h1 align="center">{% block title %} Login {% endblock %}</h1>
+
+<div class='login-form' align="center">
+	<form method="post">
+		<input type="text" name="username"
+               placeholder="username"
+               value="{{ request.form['username'] }}"></input>
+        <br><br>
+        <input type="password" name="password"
+               placeholder="password"
+               value="{{ request.form['password'] }}"></input>
+        <br><br><br>    
+        <button type="submit">Entra</button>
+	</form>
+</div>
+
+{% endblock %}
