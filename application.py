@@ -18,7 +18,7 @@ app.config['SECRET_KEY']='uOzPG137aJNoq2bBJ4b9P81DY5vCiRWj'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi.db'
 db=SQLAlchemy(app)
 
-class Student(db.Model):
+class Customer(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(13),nullable=False, unique=True)
 	password=db.Column(db.String(13),nullable=False)
