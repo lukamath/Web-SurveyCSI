@@ -26,6 +26,7 @@ class Customer(db.Model):
 
 class Course(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
+	id_course=db.Column(db.String, nullable=False)
 	course_type=db.Column(db.String)
 	date_start=db.Column(db.DateTime, nullable=False)
 	date_end=db.Column(db.DateTime)
@@ -34,6 +35,7 @@ class Professor(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	name=db.Column(db.String,nullable=False)
 	surname=db.Column(db.String,nullable=False)
+	teaching=db.Column(db.String)
 	courses=db.relationship('Course',backref='professor')
 
 class Payment(db.Model):
