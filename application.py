@@ -24,19 +24,57 @@ class Customer(db.Model):
 	password=db.Column(db.String(13),nullable=False)
 	course_id=db.Column(db.String,db.ForeignKey('course.id'))
 
-class Course(db.Model):
+# ===== <ManyToMany> ===== 
+class Question(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
-	id_course=db.Column(db.String, nullable=False)
-	course_type=db.Column(db.String)
-	date_start=db.Column(db.DateTime, nullable=False)
-	date_end=db.Column(db.DateTime)
+	qtype=db.String(db.String)
+	quest=db.String(db.String)
 
+class Mastersurvey(db.Model):
+	id=db.Column(db.Integer, primary_key=True)
+	questions = db.relationship('Question', secondary=questions, lazy='subquery', backref=db.backref('mastersurveys', lazy=True))
+	#from questions to mastersurveys the query is lazy because the need to find masters from questions is rare 
+
+#If you want to use many-to-many relationships you will need 
+#to define a helper table that is used for the relationship. 
+#For this helper table it is strongly recommended 
+#to not use a model but an actual table:
+
+questions = db.Table('questions',
+    db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
+    db.Column('mastersurvey_id', db.Integer, db.ForeignKey('mastersurvey.id'), primary_key=True)
+)
+
+# =======================
+
+# ===== <ManyToMany> ===== 
 class Professor(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	name=db.Column(db.String,nullable=False)
 	surname=db.Column(db.String,nullable=False)
 	teaching=db.Column(db.String)
-	courses=db.relationship('Course',backref='professor')
+	courses=db.relationship('Course', secondary=professor_course, lazy='subquery', backref=db.backref('courses', lazy=True))
+
+class Course(db.Model):
+	id=db.Column(db.Integer, primary_key=True)
+	course_id=db.Column(db.String, nullable=False)
+	course_type=db.Column(db.String)
+	date_start=db.Column(db.DateTime, nullable=False)
+	date_end=db.Column(db.DateTime)
+
+professor_course = db.Table('professor_course',
+    db.Column('professor_id', db.Integer, db.ForeignKey('Professor.id'), primary_key=True),
+    db.Column('course_id', db.Integer, db.ForeignKey('Course.id'), primary_key=True)
+)
+
+# =======================
+
+class Answer(db.Model):
+	id=db.Column(db.Integer, primary_key=True)
+	survey_id=db.Column(db.Integer)
+	question_id=db.Column(db.Integer)
+	value=db.Column(db.Integer)
+
 
 class Payment(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
