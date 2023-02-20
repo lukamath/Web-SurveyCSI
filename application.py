@@ -33,6 +33,8 @@ class Question(db.Model):
 class Mastersurvey(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	questions = db.relationship('Question', secondary=questions, lazy='subquery', backref=db.backref('mastersurveys', lazy=True))
+	sections=db.relationship('Section', backref='mastersurvey')
+
 	#from questions to mastersurveys the query is lazy because the need to find masters from questions is rare 
 
 #If you want to use many-to-many relationships you will need 
@@ -43,6 +45,18 @@ class Mastersurvey(db.Model):
 questions = db.Table('questions',
     db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
     db.Column('mastersurvey_id', db.Integer, db.ForeignKey('mastersurvey.id'), primary_key=True)
+)
+
+#sections
+class Section(db.Model):
+	id=db.Column(db.Integer, primary_key=True)
+	mastersurvey_id=db.Column(db.Integer)
+	type=db.Column(db.Integer)
+	questions=db.relationship('Question', secondary=questions, lazy='subquery', backref=db.backref('sections', lazy=True))
+
+insectionquestions = db.Table('insectionquestions',
+    db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
+    db.Column('section_id', db.Integer, db.ForeignKey('section.id'), primary_key=True)
 )
 
 # =======================
@@ -68,6 +82,8 @@ professor_course = db.Table('professor_course',
 )
 
 # =======================
+
+
 
 class Answer(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
