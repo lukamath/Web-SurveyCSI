@@ -15,14 +15,14 @@ Session(app)
 
 app.config['SECRET_KEY']='uOzPG137aJNoq2bBJ4b9P81DY5vCiRWj'
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi00.db'
 db=SQLAlchemy(app)
 
 class Customer(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(13),nullable=False, unique=True)
 	password=db.Column(db.String(13),nullable=False)
-	course_id=db.Column(db.String,db.ForeignKey('course.id'))
+	idcorso=db.Column(db.Integer,db.ForeignKey('course.id'))
 
 # ===== <ManyToMany> ===== 
 questions = db.Table('questions',
@@ -82,7 +82,7 @@ class Course(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	course_id=db.Column(db.String, nullable=False)
 	course_type=db.Column(db.String)
-	date_start=db.Column(db.DateTime, nullable=False)
+	date_start=db.Column(db.DateTime)
 	date_end=db.Column(db.DateTime)
 	#professors=db.relationship('Professor', secondary=professor_course, lazy='subquery', backref=db.backref('courses', lazy=True))
 
@@ -151,8 +151,8 @@ def add_course():
 			course=Course(
 				course_id=courseid,
 				course_type=coursetype,
-				date_start=datestart, 
-				date_end=dateend
+				#date_start=datestart, 
+				#date_end=dateend
 				)
 			db.session.add(course)
 			db.session.commit()
@@ -160,3 +160,9 @@ def add_course():
 		return render_template('newcourse.html') #I land again on newuser page if conditions are not all ok
 	else:
 		return render_template('newcourse.html')
+
+
+@app.route('/api/allcourses', methods=['GET','POST'])
+def all_courses():
+	courses=Course.query.all()
+	return render_template('listcourses.html', courses=courses)

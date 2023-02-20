@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %} - WebCash </title>
+    <title>{% block title %} {% endblock %} - WebSurvey CSI </title>
     <style>
         .message {
             padding: 10px;
@@ -53,16 +53,11 @@
 </head>
 <body onload="sessionvalidator()">
     <nav>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        <a href="{{ url_for('add_customer') }}">Nuovo Studente</a>
-        <a href="{{ url_for('list_students') }}">Lista Studenti</a>
-        <a href="{{ url_for('list_payments') }}">Lista Pagamenti</a>
-        <a href="#">Report Pagamenti</a>
-        {% if session.get('user_type')=='admin' -%}
-            <a href="{{ url_for('bank_management') }}">Gestione Banca - Versamenti e Prelievi</a>
-        {% elif session.get('user_type')=='cassiere' -%}
-            <a href="{{ url_for('cash_sheet',user_id=session.get('user_id')) }}">Foglio Cassa</a>
-        {% endif %}
+        <a href="#">X</a>
+        <a href="#">Y</a>
+        <a href="#">Z</a>
+        <a href="{{ url_for('all_courses') }}">Lista Corsi</a>
+        <a href="#">W</a>
     </nav>
     <hr>
     <div class="content">

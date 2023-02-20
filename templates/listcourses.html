@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='course'>
+       <h1>Lista Corsi</h1>
+        <table class='list-tab'>
+              <tr><th>ID Corso</th><th>Tipo Corso</th><th>Data Inizio</th><th>Data Fine</th>
+        {% for course in courses %}     
+            <tr>
+                <td><b>{{ course['course_id'] }}</td><td>{{ course['course_type'] }}</td><td>{{ course['date_start'] }}</td>                
+                <td>{{ course['date_end'] }}</td>
+            </tr>
+        {% endfor %} 
+        </table>
+</div>
+
+{% endblock %}
