@@ -58,17 +58,17 @@ insectionquestions = db.Table('insectionquestions',
 
 class Section(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
-	mastersurvey_id=db.Column(db.Integer)
+	mastersurvey_id=db.Column(db.Integer, db.ForeignKey('mastersurvey.id'))
 	stype=db.Column(db.Integer)
-	questions=db.relationship('Question', secondary=questions, lazy='subquery', backref=db.backref('sections', lazy=True))
+	insectionquestions=db.relationship('Question', secondary=insectionquestions, lazy='subquery', backref=db.backref('sections', lazy=True))
 
 # =======================
 
 # ===== <ManyToMany> ===== 
 
 professor_course = db.Table('professor_course',
-    db.Column('professor_id', db.Integer, db.ForeignKey('Professor.id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('Course.id'), primary_key=True)
+    db.Column('professor_id', db.Integer, db.ForeignKey('professor.id'), primary_key=True),
+    db.Column('course_id', db.Integer, db.ForeignKey('course.id'), primary_key=True)
 )
 
 class Professor(db.Model):
@@ -84,7 +84,7 @@ class Course(db.Model):
 	course_type=db.Column(db.String)
 	date_start=db.Column(db.DateTime, nullable=False)
 	date_end=db.Column(db.DateTime)
-	professors=db.relationship('Professor', secondary=professor_course, lazy='subquery', backref=db.backref('courses', lazy=True))
+	#professors=db.relationship('Professor', secondary=professor_course, lazy='subquery', backref=db.backref('courses', lazy=True))
 
 # =======================
 
@@ -97,8 +97,8 @@ class Survey(db.Model):
 
 class Answer(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
-	survey_id=db.Column(db.Integer)
-	question_id=db.Column(db.Integer)
+	survey_id=db.Column(db.Integer, db.ForeignKey('survey.id'))
+	question_id=db.Column(db.Integer, db.ForeignKey('question.id'))
 	value=db.Column(db.Integer)
 
 @app.route('/',methods=['GET','POST'])
@@ -128,3 +128,35 @@ def logout():
 	session["user_id"] = ''
 	session["user_type"] = ''
 	return render_template('loggedout.html')
+
+@app.route('/api/addcourse', methods=['GET','POST'])
+def add_course():
+	if request.method=='POST':
+		courseid=request.form['courseid']
+		coursetype=request.form['coursetype']
+		datestart=request.form['datestart']
+		dateend=request.form['dateend']
+		if not courseid:
+			flash('id corso obbligatorio!')
+		elif not coursetype:
+			flash('tipo corso obbligatoria!')
+		elif not datestart:
+			flash('data inizio obbligatoria!')
+		elif not dateend:
+			flash('data fine  obbligatoria!')
+		else:
+			checkcourse=Course.query.filter_by(course_id=courseid).first()
+			if checkcourse:
+				flash('Corso gia'' presente')
+			course=Course(
+				course_id=courseid,
+				course_type=coursetype,
+				date_start=datestart, 
+				date_end=dateend
+				)
+			db.session.add(course)
+			db.session.commit()
+			return redirect(url_for('index'))
+		return render_template('newcourse.html') #I land again on newuser page if conditions are not all ok
+	else:
+		return render_template('newcourse.html')

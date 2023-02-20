@@ -1,0 +1,29 @@
+{% extends 'base_login.html' %}
+
+{% block content %}
+
+<h1 align="center">{% block title %} Nuovo Corso {% endblock %}</h1>
+
+<div class='course-form' align="center">
+    <form method="post">
+        <input type="text" name="courseid"
+               placeholder="ID Corso"
+               value="{{ request.form['courseid'] }}"></input>
+        <br><br>
+        <input type="text" name="coursetype"
+               placeholder="Tipo Corso"
+               value="{{ request.form['coursetype'] }}"></input>
+        <br><br>
+        <input type="date" name="datestart"
+               placeholder="Data Inizio"
+               value="{{ request.form['datestart'] }}"></input>
+        <br><br>
+        <input type="date" name="dateend"
+               placeholder="Data Fine"
+               value="{{ request.form['dateend'] }}"></input>        
+        <br><br><br>    
+        <button type="submit">Aggiungi</button>
+    </form>
+</div>
+
+{% endblock %}
