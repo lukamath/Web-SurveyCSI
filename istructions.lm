@@ -1,0 +1,48 @@
+set FLASK_APP=application
+set FLASK_ENV=development
+
+flask run
+python -m flask run 
+
+python
+from application  import db
+db.create_all()
+from application import Customer
+from application import Question
+from application import Mastersurvey
+from application import Section
+from application import Professor
+from application import Course
+from application import Survey
+from application import Answer	
+db.session.add(Customer)
+db.session.add(Question)
+db.session.add(Mastersurvey)
+db.session.add(Section)
+db.session.add(Professor)
+db.session.add(Course)
+db.session.add(Survey)
+db.session.add(Answer)
+db.session.commit()
+
+
+POST
+http://127.0.0.1:5000/glasses
+headers:	content-type →application/json
+body:	{
+    		"name":"Glass Number 5",
+    		"capacity":"55"
+		}
+
+
+#to create a new file in command
+type nul > filename.ext   #change filename.ext with name I want and extension needed  
+
+
+*** Operations on Branches ***
+	New Branch with switch
+	git checkout -b <branch>
+
+	Push on a branch
+	git push -u origin <branch>
+
