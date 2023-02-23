@@ -1,0 +1,21 @@
+{% extends 'base_login.html' %}
+
+{% block content %}
+
+<h1 align="center">{% block title %} Nuovo Customer {% endblock %}</h1>
+
+<div class='course-form' align="center">
+    <form method="post">
+       <select name="idcorso" id="idcorso"><br>
+              {% for course in courses %} 
+                     <option value="{{ course.course_id }}">{{ course.course_id }}</option>
+              {% endfor %}
+       </select><br>
+        <br><br>
+                
+        <br><br><br>    
+        <button type="submit">Aggiungi</button>
+    </form>
+</div>
+
+{% endblock %}

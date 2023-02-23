@@ -166,3 +166,32 @@ def add_course():
 def all_courses():
 	courses=Course.query.all()
 	return render_template('listcourses.html', courses=courses)
+
+@app.route('/api/addcustomer', methods=['GET','POST'])
+def add_customer():
+	courses=Course.query.all()
+	if request.method=='POST':
+		idcorso=request.form['idcorso']
+		if not idcorso:
+			flash('id corso obbligatorio!')
+		else:
+			course=Course.query.filter_by(course_id=idcorso).first()
+			if course:
+				idc=course.id
+			else: 
+				flash('Errore nella creazione customer')
+				return 0;
+
+			customer=Customer(
+				idcorso=idcorso,
+				username="username",
+				password="password"
+				#date_start=datestart, 
+				#date_end=dateend
+				)
+			db.session.add(customer)
+			db.session.commit()
+			return redirect(url_for('index'))
+		return render_template('newcustomer.html') #I land again on newuser page if conditions are not all ok
+	else:
+		return render_template('newcustomer.html', courses=courses)
