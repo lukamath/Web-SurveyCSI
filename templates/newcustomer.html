@@ -7,7 +7,7 @@
 <div class='course-form' align="center">
     <form method="post">
        <select name="idcorso" id="idcorso"><br>
-              {% for course in courses %} 
+                     {% for course in courses %} 
                      <option value="{{ course.course_id }}">{{ course.course_id }}</option>
               {% endfor %}
        </select><br>
