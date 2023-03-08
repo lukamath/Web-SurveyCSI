@@ -15,7 +15,7 @@ Session(app)
 
 app.config['SECRET_KEY']='uOzPG137aJNoq2bBJ4b9P81DY5vCiRWj'
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi00.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi01.db'
 db=SQLAlchemy(app)
 
 class Customer(db.Model):
@@ -58,13 +58,14 @@ class Mastersurvey(db.Model):
 
 insectionquestions = db.Table('insectionquestions',
     db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
-    db.Column('section_id', db.Integer, db.ForeignKey('section.id'), primary_key=True)
+    db.Column('section_id', db.Integer, db.ForeignKey('section.id'), primary_key=True),
+    db.Column('qweight', db.Integer)
 )
 
 class Section(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
 	mastersurvey_id=db.Column(db.Integer, db.ForeignKey('mastersurvey.id'))
-	stype=db.Column(db.Integer)
+	stype=db.Column(db.String)
 	insectionquestions=db.relationship('Question', secondary=insectionquestions, lazy='subquery', backref=db.backref('sections', lazy=True))
 
 # =======================
