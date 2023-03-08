@@ -53,11 +53,11 @@
 </head>
 <body onload="sessionvalidator()">
     <nav>
-        <a href="#">X</a>
+        <a href="{{ url_for('index') }}">Login</a>
         <a href="#">Y</a>
         <a href="#">Z</a>
         <a href="{{ url_for('all_courses') }}">Lista Corsi</a>
-        <a href="#">W</a>
+        <a href="{{ url_for('all_customers') }}">Lista Customers</a>
     </nav>
     <hr>
     <div class="content">

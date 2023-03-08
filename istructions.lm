@@ -1,10 +1,8 @@
 set FLASK_APP=application
 set FLASK_ENV=development
 
-flask run
-python -m flask run 
-
 python
+
 from application  import db
 db.create_all()
 from application import Customer
@@ -25,6 +23,8 @@ db.session.add(Survey)
 db.session.add(Answer)
 db.session.commit()
 
+flask run
+python -m flask run 
 
 POST
 http://127.0.0.1:5000/glasses

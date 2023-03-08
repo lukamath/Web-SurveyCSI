@@ -23,6 +23,11 @@ class Customer(db.Model):
 	username=db.Column(db.String(13),nullable=False, unique=True)
 	password=db.Column(db.String(13),nullable=False)
 	idcorso=db.Column(db.Integer,db.ForeignKey('course.id'))
+	status=db.Column(db.Integer)
+	#I set 0 as default status to identify a not-consumed account. When the account will fill the survey
+	#I will set the statu as 1 and the account won't be more usable
+	def __init__(self):
+		self.staus = 0
 
 # ===== <ManyToMany> ===== 
 questions = db.Table('questions',
@@ -112,11 +117,11 @@ def index():
 			flash('password obbligatoria!')
 		else:
 			customer=Customer.query.filter_by(username=username, password=password).first()
-			if user:
-				session["user"] = username
-				session["user_id"] = user.id
-				session["user_type"] = user.usertype
-				return redirect(url_for('list_students'))
+			if customer:
+				session["customer"] = username
+				session["customer_id"] = customer.id
+				#session["customer_type"] = customer.customertype
+				return redirect(url_for('all_courses'))
 		flash('Utente non trovato. Verifica le tue credenziali')
 		return render_template('index.html')
 	else:
@@ -172,6 +177,8 @@ def add_customer():
 	courses=Course.query.all()
 	if request.method=='POST':
 		idcorso=request.form['idcorso']
+		username=request.form['username']
+		password=request.form['password']
 		if not idcorso:
 			flash('id corso obbligatorio!')
 		else:
@@ -184,8 +191,8 @@ def add_customer():
 
 			customer=Customer(
 				idcorso=idcorso,
-				username="username",
-				password="password"
+				username=username,
+				password=password
 				#date_start=datestart, 
 				#date_end=dateend
 				)
@@ -195,3 +202,8 @@ def add_customer():
 		return render_template('newcustomer.html') #I land again on newuser page if conditions are not all ok
 	else:
 		return render_template('newcustomer.html', courses=courses)
+
+@app.route('/api/allcustomers', methods=['GET','POST'])
+def all_customers():
+	customers=Customer.query.all()
+	return render_template('listcustomers.html', customers=customers)

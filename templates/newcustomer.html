@@ -7,12 +7,19 @@
 <div class='course-form' align="center">
     <form method="post">
        <select name="idcorso" id="idcorso"><br>
-                     {% for course in courses %} 
-                     <option value="{{ course.course_id }}">{{ course.course_id }}</option>
-              {% endfor %}
+            {% for course in courses %} 
+                <option value="{{ course.course_id }}">{{ course.course_id }}</option>
+            {% endfor %}
        </select><br>
+       <br><br>
+       <input type="text" name="username"
+               placeholder="username"
+               value="{{ request.form['username'] }}"></input>
         <br><br>
-                
+        <input type="password" name="password"
+               placeholder="password"
+               value="{{ request.form['password'] }}"></input>
+        <br><br>
         <br><br><br>    
         <button type="submit">Aggiungi</button>
     </form>
