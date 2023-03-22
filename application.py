@@ -15,7 +15,7 @@ Session(app)
 
 app.config['SECRET_KEY']='uOzPG137aJNoq2bBJ4b9P81DY5vCiRWj'
 
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi01.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db_csi03.db'
 db=SQLAlchemy(app)
 
 class Customer(db.Model):
@@ -37,8 +37,8 @@ questions = db.Table('questions',
 
 class Question(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
-	qtype=db.String(db.String)
-	quest=db.String(db.String)
+	qtype=db.Column(db.String)
+	quest=db.Column(db.String)
 
 class Mastersurvey(db.Model):
 	id=db.Column(db.Integer, primary_key=True)
@@ -52,10 +52,7 @@ class Mastersurvey(db.Model):
 #For this helper table it is strongly recommended 
 #to not use a model but an actual table:
 
-
-
 #sections
-
 insectionquestions = db.Table('insectionquestions',
     db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
     db.Column('section_id', db.Integer, db.ForeignKey('section.id'), primary_key=True),
@@ -208,3 +205,31 @@ def add_customer():
 def all_customers():
 	customers=Customer.query.all()
 	return render_template('listcustomers.html', customers=customers)
+
+
+@app.route('/api/addquestion', methods=['GET','POST'])
+def add_question():
+	questions=Question.query.all()
+	if request.method=='POST':
+		questiontype=request.form['questiontype']
+		newquestion=request.form['newquestion']
+		if not questiontype:
+			flash('tipo domamnda obbligatorio!')
+		elif not newquestion:
+			flash('testo domanda obbligatorio!')
+		else:
+			question=Question(
+				qtype=questiontype,
+				quest=newquestion
+				)
+			db.session.add(question)
+			db.session.commit()
+		return render_template('questionmanager.html') #I land again on newuser page if conditions are not all ok
+	else:
+		return render_template('questionmanager.html', questions=questions)
+
+
+@app.route('/api/allquestions', methods=['GET','POST'])
+def all_questions():
+	questions=Question.query.all()
+	return render_template('listquestions.html', questions=questions)

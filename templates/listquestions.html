@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='course'>
+       <h1>Lista Domande</h1>
+        <table class='list-tab'>
+              <tr><th>ID</th><th>Type</th><th>Domanda</th>
+        {% for question in questions %}  
+            <tr>
+                <td><b>{{ question['id'] }}</td><td>{{ question['qtype'] }}</td><td>{{ question['quest'] }}</td>
+            </tr>
+        {% endfor %} 
+        </table>
+</div>
+
+{% endblock %}
